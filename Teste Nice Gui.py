@@ -4,12 +4,19 @@ from nicegui import ui
 # Depois de instalar: pip install --upgrade nicegui
 
 ui.label("Hello, NiceGUI!").style("font-size: 2em; color: blue;")
+
 ui.button("Click me!", on_click=lambda: ui.notify("Button clicked!")).style(
     "font-size: 1.5em; color: green;"
 )
+
 ui.input("Type something:").style("font-size: 1.2em; color: purple;")
+
 ui.button("Submit", on_click=lambda: ui.notify("Submitted!")).style(
     "font-size: 1.5em; color: red;"
 )
-ui.button("Close", on_click=lambda: ui.get_app().shutdown()).style("font-size: 1.5em; color: orange;")
+def shutdown():
+    ui.notify("Shutting down...")
+
+ui.button("Close", on_click=shutdown).style("font-size: 1.5em; color: orange;")
+
 ui.run()
