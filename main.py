@@ -1,8 +1,10 @@
 from nicegui import ui
-from Telas.login import create_login_page
+from Telas.login import create_login_page, create_signup_page
 from Telas.dashboard import dashboard
 
+
 # Register all page routes first
+create_signup_page()
 create_login_page()
 dashboard()
 

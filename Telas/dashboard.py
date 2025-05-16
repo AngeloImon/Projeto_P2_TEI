@@ -17,8 +17,8 @@ def dashboard():
             ui.markdown(
                 """
                         Aqui você pode:
-                        - Visualizar seus planos de estudo!/n
-                        - Criar novos planos!/n
+                        - Visualizar seus planos de estudo!
+                        - Criar novos planos!
                         - Acompanhar seu progresso!
                          """
             )
