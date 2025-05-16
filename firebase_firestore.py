@@ -1,7 +1,11 @@
 import requests
+import os
+from dotenv import load_dotenv
 
-FIREBASE_PROJECT_ID = 'projeto-p2-tei'
-FIREBASE_API_KEY = "AIzaSyDhKeTBWb8vP0-glvanMx_-W2NNnBat0L0"
+load_dotenv()
+
+FIREBASE_API_KEY = os.getenv("FIREBASE_API_KEY")
+FIREBASE_PROJECT_ID = os.getenv("FIREBASE_PROJECT_ID")
 
 def firestore_set_user_data(uid, data, id_token):
     url = f"https://firestore.googleapis.com/v1/projects/{FIREBASE_PROJECT_ID}/databases/(default)/documents/usuarios/{uid}"

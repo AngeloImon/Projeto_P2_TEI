@@ -1,8 +1,11 @@
 from nicegui import ui
+import os
+from dotenv import load_dotenv
 import requests
 import re
 
-FIREBASE_API_KEY = "AIzaSyDhKeTBWb8vP0-glvanMx_-W2NNnBat0L0"
+load_dotenv()
+FIREBASE_API_KEY = os.getenv("FIREBASE_API_KEY")
 
 
 def firebase_login(email, password):
