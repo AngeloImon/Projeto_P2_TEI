@@ -10,15 +10,15 @@ def dashboard():
             ui.link("Novo Plano", "novo-plano").classes("text-lg")
             ui.link("Sair", "/login").classes("text-lg")
 
-        with ui.column().classes("mx-auto mt-8 p-8 max-w-4x1"):
-            ui.label("Bem vindo ao seu painel de estudos!").classes(
-                "text-2x1 font-bold mb-4"
-            )
-            ui.markdown(
-                """
-                        Aqui você pode:
-                        - Visualizar seus planos de estudo!
-                        - Criar novos planos!
-                        - Acompanhar seu progresso!
-                         """
-            )
+    with ui.column().classes("mx-auto mt-8 p-8 max-w-4x1"):
+        ui.label("Bem vindo ao seu painel de estudos!").classes(
+            "text-2x1 font-bold mb-4"
+        )
+        ui.markdown(
+            """
+                Aqui você pode:
+                - Visualizar seus planos de estudo!
+                - Criar novos planos!
+                - Acompanhar seu progresso!
+            """
+        )

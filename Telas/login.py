@@ -71,6 +71,11 @@ def create_login_page():
     def login_page():
         ui.query("body").style("background-color: #f0f0f0")
 
+        with ui.header().classes("bg-blue-800 text-white p-4 shadow-md"):
+            with ui.row().classes("items-center gap-4"):
+                ui.link("Home", "/").classes("text-lg")
+                ui.link("Sobre", "/about").classes("text-lg")
+
         with ui.column().classes("mx-auto mt-8 items-center"):
             ui.label("Tela de Login").classes("text-2xl text-blue-500 mb-8")
 

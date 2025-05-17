@@ -1,20 +1,19 @@
 from nicegui import ui
 from Telas.login import create_login_page, create_signup_page
 from Telas.dashboard import dashboard
-
+from Telas.sobre import sobre
 
 # Register all page routes first
 create_signup_page()
 create_login_page()
 dashboard()
-
+sobre()
 
 # Home page
 @ui.page("/")
 def home():
     with ui.header().classes("bg-blue-800 text-white p-4 shadow-md"):
         with ui.row().classes("items-center gap-4"):
-            ui.link("Home", "/").classes("text-lg")
             ui.link("Login", "/login").classes("text-lg")
             ui.link("Sobre", "/about").classes("text-lg")
 
