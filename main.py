@@ -9,6 +9,8 @@ from Telas.dashboard import dashboard
 from Telas.sobre import sobre
 from Telas.meus_planos import meus_planos
 from Telas.novo_plano import novo_plano
+from Telas.novo_plano_dias_semana import novo_plano_dias_semana
+from Telas.novo_plano_calendario import novo_plano_calendario
 
 # Carrega variáveis de ambiente do arquivo .env
 load_dotenv()

@@ -1,6 +1,7 @@
 from nicegui import ui
 from dotenv import load_dotenv
 
+
 # About page
 @ui.page("/about")
 def sobre():

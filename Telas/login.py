@@ -50,9 +50,9 @@ def login():
     def login_page():
         # Define o estilo de fundo da página
         ui.query("body").style("background-color: #f0f0f0")
-        
+
         cabecalho_login()
-        
+
         # Conteúdo principal da tela de login
         with ui.column().classes("mx-auto mt-8 items-center"):
             ui.label("Tela de Login").classes("text-2xl text-blue-500 mb-8")
@@ -61,7 +61,7 @@ def login():
                 password_input = ui.input(
                     "Senha", password=True, password_toggle_button=True
                 ).classes("w-full mb-4")
-                
+
                 def authenticate():
                     result = firebase_login(email_input.value, password_input.value)
                     if result:
@@ -72,25 +72,30 @@ def login():
                         ui.navigate.to("/dashboard")
                     else:
                         ui.notify("Credenciais inválidas", color="negative")
-                
+
                 # Botão de login
                 ui.button("Entrar", on_click=authenticate).classes(
                     "w-full bg-blue-500 text-white"
                 )
-                
+
                 def open_password_reset_dialog():
                     # Diálogo de recuperação de senha
                     with ui.dialog() as dialog, ui.card():
                         ui.label("Recuperar senha").classes("text-lg mb-4")
                         reset_email = ui.input("Email").classes("w-full mb-2")
-                        
+
                         def do_reset():
                             if firebase_password_reset(reset_email.value):
-                                ui.notify("Email de recuperação enviado!", color="positive")
+                                ui.notify(
+                                    "Email de recuperação enviado!", color="positive"
+                                )
                                 dialog.close()
                             else:
-                                ui.notify("Erro ao enviar email de recuperação", color="negative")
-                        
+                                ui.notify(
+                                    "Erro ao enviar email de recuperação",
+                                    color="negative",
+                                )
+
                         ui.button("Enviar", on_click=do_reset).classes(
                             "w-full bg-blue-500 text-white"
                         )
@@ -98,14 +103,13 @@ def login():
                             "w-full mt-2"
                         )
                     dialog.open()
-                
+
                 # Botões Recuperar senha
-                ui.button("Esqueci a senha", on_click=open_password_reset_dialog).classes(
-                    "w-full bg-gray-100 text-blue-700 mt-2"
-                )
-                
+                ui.button(
+                    "Esqueci a senha", on_click=open_password_reset_dialog
+                ).classes("w-full bg-gray-100 text-blue-700 mt-2")
+
                 # Botões Criar conta
                 ui.button(
-                    "Criar conta",on_click=lambda: ui.navigate.to("/signup")).classes("w-full bg-gray-200 text-blue-700 mt-2"
-                )
-                 
+                    "Criar conta", on_click=lambda: ui.navigate.to("/signup")
+                ).classes("w-full bg-gray-200 text-blue-700 mt-2")

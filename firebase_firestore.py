@@ -23,6 +23,7 @@ def firestore_get_user_plans(uid, id_token):
             "descricao": fields.get("descricao", {}).get("stringValue", ""),
             "programacao": fields.get("programacao", {}).get("stringValue", ""),
             "alerta": fields.get("alerta", {}).get("stringValue", ""),
+            "cor": fields.get("cor", {}).get("stringValue", ""),
         })
     return planos
 
