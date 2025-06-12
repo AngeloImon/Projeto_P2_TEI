@@ -3,6 +3,7 @@ from datetime import datetime
 from calendar import monthrange
 from firebase_firestore import firestore_get_user_plans
 from collections import defaultdict
+from datetime import datetime, timedelta
 
 CORES_HEX = {
     "Verde": "#22c55e",
@@ -77,7 +78,7 @@ def dashboard():
                     "text-gray-600"
                 )
 
-        # --- VARIÁVEIS E FUNÇÕES DO CALENDÁRIO (fora do layout) ---
+        # --- VARIÁVEIS E FUNÇÕES DO CALENDÁRIO ---
         hoje = datetime.now().date()
         ano_atual = hoje.year
         mes_atual = hoje.month
@@ -175,12 +176,11 @@ def dashboard():
         # --- CALENDÁRIO E PRÓXIMAS TAREFAS LADO A LADO ---
         with ui.card().classes("mt-10 p-6 shadow-md bg-white rounded-lg"):
             with ui.row().classes("gap-10 items-start"):
-                # Calendário à esquerda
                 with ui.column().classes("flex-grow"):
                     ui.label("🗓️ Calendário").classes(
                         "text-lg font-semibold text-blue-900 mb-4"
                     )
-                    calendario_box = ui.column().classes("mt-4")  # <-- AGORA AQUI!
+                    calendario_box = ui.column().classes("mt-4")
 
                     def desenhar_calendario():
                         calendario_box.clear()
@@ -301,30 +301,60 @@ def dashboard():
                     ano.on("change", lambda e: desenhar_calendario())
                     mes.on("change", lambda e: desenhar_calendario())
 
-                # Próximas tarefas à direita
+                # Próximas tarefas
                 with ui.column().classes("w-80"):
-                    ui.label("📅 Próximas Tarefas").classes(
-                        "text-lg font-semibold text-blue-900 mb-2"
-                    )
+                    ui.label("📅 Próximas Tarefas").classes("text-lg font-semibold text-blue-900 mb-2")
+                    ui.space().classes("mb-10")
                     hoje_dt = datetime.now().date()
                     tarefas_futuras = []
-                    for data_str in sorted(contagem_planos.keys()):
-                        data_dt = datetime.strptime(data_str, "%Y-%m-%d").date()
-                        if data_dt >= hoje_dt:
-                            for cor_nome in cores_planos.get(data_str, []):
-                                tarefas_futuras.append((data_dt, cor_nome))
+                    for plano in planos or []:
+                        prog = plano.get("programacao", "")
+                        cor_nome = plano.get("cor")
+                        if "Data:" in prog:
+                            data_str = prog.split("Data:")[1].strip()[:10]
+                            data_dt = datetime.strptime(data_str, "%Y-%m-%d").date()
+                            if data_dt >= hoje_dt:
+                                tarefas_futuras.append((data_dt, plano))
+                        elif "Dias:" in prog:
+                            dias_str = prog.split("Dias:")[1].strip()
+                            dias_lista = [d.strip() for d in dias_str.split(",")]
+                            dias_semana_map = {
+                                "Domingo": 6, "Segunda": 0, "Terça": 1, "Quarta": 2,
+                                "Quinta": 3, "Sexta": 4, "Sábado": 5,
+                            }
+                            dias_indices = [dias_semana_map[d] for d in dias_lista if d in dias_semana_map]
+                            for i in range(14):
+                                dia_check = hoje_dt + timedelta(days=i)
+                                if dia_check.weekday() in dias_indices:
+                                    tarefas_futuras.append((dia_check, plano))
+                                    break
+                    tarefas_futuras.sort(key=lambda x: x[0])
                     for tarefa in tarefas_futuras[:7]:
-                        data_dt, cor_nome = tarefa
+                        data_dt, plano = tarefa
+                        cor_nome = plano.get("cor")
                         cor_hex = CORES_HEX.get(cor_nome, "#3b82f6")
-                        with ui.row().classes("items-center mb-1"):
+                        titulo = plano.get("titulo", "")
+                        descricao = plano.get("descricao", "")
+                        horario = plano.get("horario", "--:--")
+                        duracao = plano.get("duracao", "00")
+                        if duracao is None or str(duracao).lower() == "none":
+                            duracao = "00"
+                        else:
+                            try:
+                                duracao = str(int(float(duracao)))
+                            except Exception:
+                                duracao = "00"
+                        # Primeira linha: ícone, nome e descrição (tudo inline)
+                        with ui.row().classes("items-center mb-0"):
                             ui.icon("event").style(f"color: {cor_hex};")
-                            ui.label(
-                                f"{data_dt.strftime('%d/%m/%Y')} - {cor_nome}"
-                            ).classes("ml-2")
+                            ui.label(f"{titulo}").classes("ml-2 font-semibold")
+                            if descricao:
+                                ui.label(f"— {descricao}").classes("ml-2 text-gray-700 text-sm")
+                        # Segunda linha: data, horário e duração
+                        with ui.row().classes("ml-8 mb-2"):
+                            ui.label(f"{data_dt.strftime('%d/%m')} • {horario} • {duracao} min").classes("text-blue-900 text-xs")
                     if not tarefas_futuras:
-                        ui.label("Nenhuma tarefa futura encontrada.").classes(
-                            "text-gray-500"
-                        )
+                        ui.label("Nenhuma tarefa futura encontrada.").classes("text-gray-500")
 
         # --- DICA DO DIA ---
         ui.label("🔔 Dica do Dia: Consistência é a chave para o sucesso!").classes(

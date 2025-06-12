@@ -29,9 +29,7 @@ def cabecalho_padrao():
         "bg-gradient-to-r from-blue-700 to-blue-900 text-white p-4 shadow-lg"
     ):
         with ui.row().classes("items-center justify-between w-full px-4"):
-            # Nome do sistema
             ui.label("📘 Meu App de Estudos").classes("text-2xl font-extrabold")
-            # Links de navegação disponíveis na home (apenas Login e Sobre)
             with ui.row().classes("gap-8"):
                 ui.link("🔑 Login", "/login").classes(
                     "text-lg hover:underline hover:text-yellow-300"

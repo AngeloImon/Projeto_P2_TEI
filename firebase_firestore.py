@@ -41,7 +41,6 @@ def firestore_create_user_plan(uid, id_token, plano):
         "Authorization": f"Bearer {id_token}",
         "Content-Type": "application/json",
     }
-    # Monta o corpo do documento Firestore
     fields = {
         "titulo": {"stringValue": plano.get("titulo", "")},
         "descricao": {"stringValue": plano.get("descricao", "")},
