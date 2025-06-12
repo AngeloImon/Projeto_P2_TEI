@@ -5,7 +5,7 @@ from calendar import monthrange
 
 # --- Função utilitária para criar campos padrão de título, descrição, horário, duração e cor ---
 def criar_campos_padrao(
-    titulo_val="", descricao_val="", horario_val="", duracao_val="", cor_val=None
+    titulo_val="", descricao_val="", horario_val=None, duracao_val=None, cor_val=None
 ):
     cores = [
         ("Verde", "#22c55e"),
@@ -38,17 +38,31 @@ def criar_campos_padrao(
         )
 
     cor.on("update:model-value", atualizar_preview)
-    atualizar_preview()  # Atualiza preview na criação inicial
-
+    atualizar_preview()
     titulo = ui.input("Título", value=titulo_val).classes("w-full mb-2")
     descricao = ui.input("Descrição", value=descricao_val).classes("w-full mb-2")
-    alerta_horario = ui.input(
-        "Horário do alerta (formato HH:MM)", value=horario_val
-    ).classes("w-full mb-2")
-    alerta_duracao = ui.input("Duração (minutos)", value=duracao_val).classes(
-        "w-full mb-2"
+
+    ui.label("Horário do alerta (hora)").classes("mb-1")
+    hora_inicial = int(horario_val.split(":")[0]) if horario_val else 12
+    alerta_hora = (
+        ui.slider(min=0, max=23, value=hora_inicial, step=1)
+        .props("label-always")
+        .classes("w-full mb-2")
     )
-    return titulo, descricao, alerta_horario, alerta_duracao, cor
+
+    ui.label("Minutos").classes("mb-1")
+    minuto_inicial = int(horario_val.split(":")[1]) if horario_val else 0
+    alerta_minuto = (
+        ui.slider(min=0, max=59, value=minuto_inicial, step=1)
+        .props("label-always")
+        .classes("w-full mb-2")
+    )
+
+    alerta_duracao = ui.number(
+        min=1, step=1, value=duracao_val, label="Duração (minutos)"
+    ).classes("w-full mb-2")
+
+    return titulo, descricao, alerta_hora, alerta_minuto, alerta_duracao, cor
 
 
 # --- Função utilitária para criar checkboxes dos dias da semana ---
@@ -86,8 +100,8 @@ def verificar_titulo(titulo):
 
 # --- Validação do campo horário do alerta ---
 def verificar_alerta_horario(alerta_horario):
-    if not alerta_horario.value or not alerta_horario.value.strip():
-        ui.notify("O horário do alerta é obrigatório.", color="warning")
+    if alerta_horario.value is None or not isinstance(alerta_horario.value, int):
+        ui.notify("Selecione um horário válido.", color="warning")
         return False
     return True
 

@@ -11,6 +11,9 @@ from Telas.meus_planos import meus_planos
 from Telas.novo_plano import novo_plano
 from Telas.novo_plano_dias_semana import novo_plano_dias_semana
 from Telas.novo_plano_calendario import novo_plano_calendario
+from Telas.importar_exportar_dados_geral import importar_exportar_dados_geral
+from Telas.importar_exportar_dados_individual import importar_exportar_dados_individual
+
 
 # Carrega variáveis de ambiente do arquivo .env
 load_dotenv()
@@ -18,6 +21,7 @@ load_dotenv()
 # Registra as páginas de cadastro e login
 signup()
 login()
+
 
 # --- Cabeçalho padronizado para a página inicial ---
 def cabecalho_padrao():
@@ -63,9 +67,9 @@ def home():
         ).classes("mt-6 bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded")
 
         # Botão para acessar a tela de login
-        ui.button(
-            "➡️ Acessar Login", on_click=lambda: ui.navigate.to("/login")
-        ).classes("mt-6 bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded")
+        ui.button("➡️ Acessar Login", on_click=lambda: ui.navigate.to("/login")).classes(
+            "mt-6 bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded"
+        )
 
 
 # --- Inicializa o servidor NiceGUI ---

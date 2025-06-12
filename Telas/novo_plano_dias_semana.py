@@ -47,7 +47,9 @@ def novo_plano_dias_semana():
 
     with ui.card().classes("mx-auto mt-10 w-[400px] p-8 shadow-lg"):
         ui.label("Preencha os dados do novo plano:").classes("text-lg font-bold mb-4")
-        titulo, descricao, alerta_horario, alerta_duracao, cor = criar_campos_padrao()
+        titulo, descricao, alerta_horario, alerta_minuto, alerta_duracao, cor = (
+            criar_campos_padrao()
+        )
         dias_semana_checkboxes = criar_checkboxes_dias_semana([])
 
         def salvar():
@@ -59,15 +61,18 @@ def novo_plano_dias_semana():
             if not dias_selecionados:
                 ui.notify("Selecione pelo menos um dia da semana.", color="warning")
                 return
+
             programacao = f"Dias: {', '.join(dias_selecionados)}"
-            alerta = (
-                f"Horário: {alerta_horario.value}, Duração: {alerta_duracao.value} min"
-            )
+            hora = f"{alerta_horario.value:02d}:{alerta_minuto.value:02d}"
+
             novo = {
                 "titulo": titulo.value,
                 "descricao": descricao.value,
                 "programacao": programacao,
-                "alerta": alerta,
+                "horario": hora,
+                "duracao": (
+                    str(int(alerta_duracao.value)) if alerta_duracao.value else None
+                ),
                 "cor": cor.value,
                 "data_adicionado": datetime.now().isoformat(),
             }

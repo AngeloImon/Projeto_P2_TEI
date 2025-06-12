@@ -44,7 +44,9 @@ def novo_plano_calendario():
 
     with ui.card().classes("mx-auto mt-10 w-[400px] p-8 shadow-lg"):
         ui.label("Preencha os dados do novo plano:").classes("text-lg font-bold mb-4")
-        titulo, descricao, alerta_horario, alerta_duracao, cor = criar_campos_padrao()
+        titulo, descricao, alerta_horario, alerta_minuto, alerta_duracao, cor = (
+            criar_campos_padrao()
+        )
         ui.label("Data").classes("mb-1")
         data_unica = ui.date().classes("mb-2")
 
@@ -56,15 +58,16 @@ def novo_plano_calendario():
                 return
             if not verificar_alerta_horario(alerta_horario):
                 return
+
             programacao = f"Data: {data_unica.value}"
-            alerta = (
-                f"Horário: {alerta_horario.value}, Duração: {alerta_duracao.value} min"
-            )
+            hora = f"{alerta_horario.value:02d}:{alerta_minuto.value:02d}"
+
             novo = {
                 "titulo": titulo.value,
                 "descricao": descricao.value,
                 "programacao": programacao,
-                "alerta": alerta,
+                "horario": hora,
+                "duracao": alerta_duracao.value,
                 "cor": cor.value,
                 "data_adicionado": datetime.now().isoformat(),
             }
