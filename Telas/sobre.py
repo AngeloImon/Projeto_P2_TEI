@@ -55,7 +55,7 @@ def sobre():
 
             - Mariana Nakamura Taba - RA 2840482221005
 
-            - João Vitor Bravo Arruda
+            - João Vitor Bravo Arruda - RA 2840482221006
 
             ---
             **Dúvidas ou sugestões?**  
