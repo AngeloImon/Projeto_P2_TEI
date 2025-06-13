@@ -45,7 +45,9 @@ def firestore_create_user_plan(uid, id_token, plano):
         "titulo": {"stringValue": plano.get("titulo", "")},
         "descricao": {"stringValue": plano.get("descricao", "")},
         "programacao": {"stringValue": plano.get("programacao", "")},
-        "alerta": {"stringValue": plano.get("alerta", "")},
+        "horario": {"stringValue": plano.get("horario", "--:--")},
+        "duracao": {"stringValue": plano.get("duracao", "00")},
+        "data_adicionado": {"stringValue": plano.get("data_adicionado", "")},
         "cor": {"stringValue": plano.get("cor", "")},
     }
     data = {"fields": fields}
